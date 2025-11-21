@@ -3,94 +3,75 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Painel Admin - Chá da Suelen</title>
+    <title>Admin - Chá da Suelen</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
     <style>
         :root {
-            --admin-bg: #f4f6f8;
-            --header-bg: #2c3e50;
-            --white: #ffffff;
-            --text: #333;
-            --green: #27ae60;
-            --red: #c0392b;
-            --blue: #2980b9;
+            --bg: #f0f2f5;
+            --header: #2c3e50;
+            --white: #fff;
+            --green: #27ae60; --red: #c0392b; --blue: #2980b9; --orange: #f39c12;
         }
-
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; }
+        body { background: var(--bg); color: #333; }
+
+        /* Login */
+        #login-screen { height: 100vh; display: flex; justify-content: center; align-items: center; background: linear-gradient(135deg, #2c3e50, #3498db); }
+        .login-box { background: white; padding: 40px; border-radius: 10px; width: 300px; text-align: center; box-shadow: 0 10px 20px rgba(0,0,0,0.2); }
+        .login-box input { width: 100%; padding: 10px; margin: 15px 0; border: 1px solid #ccc; border-radius: 5px; }
+
+        /* Painel */
+        header { background: var(--header); color: white; padding: 15px 20px; display: flex; justify-content: space-between; align-items: center; }
+        .container { max-width: 1100px; margin: 30px auto; padding: 0 20px; }
         
-        body { background-color: var(--admin-bg); color: var(--text); }
+        .dashboard-grid { display: grid; grid-template-columns: 1fr 2fr; gap: 20px; }
+        @media(max-width:768px) { .dashboard-grid { grid-template-columns: 1fr; } }
 
-        /* Login Screen */
-        #login-screen {
-            height: 100vh; display: flex; justify-content: center; align-items: center;
-            background: linear-gradient(135deg, #2c3e50, #4ca1af);
-        }
-        .login-box {
-            background: white; padding: 40px; border-radius: 10px; text-align: center;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.2); width: 300px;
-        }
-        .login-box input {
-            width: 100%; padding: 10px; margin: 15px 0; border: 1px solid #ddd; border-radius: 5px;
-        }
+        .card { background: white; padding: 20px; border-radius: 8px; margin-bottom: 20px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
+        .card h3 { border-bottom: 1px solid #eee; padding-bottom: 10px; margin-bottom: 15px; color: var(--header); }
 
-        /* Admin Dashboard */
-        header {
-            background-color: var(--header-bg); color: white; padding: 15px 30px;
-            display: flex; justify-content: space-between; align-items: center;
-        }
-        
-        .container { max-width: 1200px; margin: 30px auto; padding: 0 20px; }
-
-        .dashboard-grid { display: grid; grid-template-columns: 1fr 2fr; gap: 30px; }
-        
-        /* Card de Adicionar */
-        .card { background: white; padding: 25px; border-radius: 10px; box-shadow: 0 2px 10px rgba(0,0,0,0.05); margin-bottom: 20px; }
-        .card h3 { margin-bottom: 15px; border-bottom: 2px solid #eee; padding-bottom: 10px; }
-
+        /* Form */
         .form-group { margin-bottom: 15px; }
-        .form-group label { display: block; margin-bottom: 5px; font-weight: 600; font-size: 0.9rem; }
-        .form-group input, .form-group select {
-            width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 5px;
-        }
+        .form-group label { display: block; font-size: 0.9rem; margin-bottom: 5px; font-weight: 600; }
+        .form-group input, .form-group select { width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 5px; }
 
         /* Tabela */
-        table { width: 100%; border-collapse: collapse; background: white; border-radius: 10px; overflow: hidden; box-shadow: 0 2px 10px rgba(0,0,0,0.05); }
-        th, td { padding: 12px 15px; text-align: left; border-bottom: 1px solid #eee; font-size: 0.9rem; }
-        th { background-color: #ecf0f1; font-weight: 600; color: #555; }
+        table { width: 100%; border-collapse: collapse; font-size: 0.9rem; }
+        th, td { padding: 12px; text-align: left; border-bottom: 1px solid #eee; }
+        th { background: #f8f9fa; }
         
-        .status-livre { color: var(--green); font-weight: bold; background: #eafaf1; padding: 3px 8px; border-radius: 4px; font-size: 0.8rem; }
-        .status-doado { color: var(--blue); font-weight: bold; background: #ebf5fb; padding: 3px 8px; border-radius: 4px; font-size: 0.8rem; }
+        .tag { padding: 4px 8px; border-radius: 4px; font-weight: bold; font-size: 0.75rem; }
+        .tag-livre { background: #eafaf1; color: var(--green); }
+        .tag-ocupado { background: #ebf5fb; color: var(--blue); }
 
         /* Botões */
-        .btn { padding: 8px 15px; border: none; border-radius: 5px; cursor: pointer; color: white; font-weight: 600; transition: 0.3s; }
-        .btn-primary { background-color: var(--blue); width: 100%; }
-        .btn-danger { background-color: var(--red); font-size: 0.8rem; padding: 5px 10px; }
-        .btn-warning { background-color: #f39c12; font-size: 0.8rem; padding: 5px 10px; color: white; }
+        .btn { border: none; padding: 8px 12px; border-radius: 5px; cursor: pointer; color: white; font-weight: 500; font-size: 0.85rem; transition: 0.2s; }
         .btn:hover { opacity: 0.9; }
-
-        /* Mobile Responsive */
-        @media (max-width: 768px) {
-            .dashboard-grid { grid-template-columns: 1fr; }
-            table { display: block; overflow-x: auto; }
-        }
+        .btn-primary { background: var(--blue); width: 100%; }
+        .btn-warning { background: var(--orange); }
+        .btn-danger { background: var(--red); }
+        
+        #loading { text-align: center; color: #666; margin: 20px; }
     </style>
 </head>
 <body>
 
     <div id="login-screen">
         <div class="login-box">
-            <h2>🔒 Acesso Admin</h2>
-            <p style="font-size: 0.9rem; color: #666; margin-top: 5px;">Digite a senha do administrador</p>
+            <h2>🔒 Admin</h2>
             <input type="password" id="admin-pass" placeholder="Senha...">
             <button class="btn btn-primary" onclick="login()">Entrar</button>
-            <p id="login-msg" style="color: red; margin-top: 10px; font-size: 0.8rem;"></p>
         </div>
     </div>
 
     <div id="admin-panel" style="display: none;">
         <header>
-            <h3>🛠️ Admin: Chá da Suelen</h3>
-            <button onclick="logout()" style="background:none; border:none; color:white; cursor:pointer;">Sair</button>
+            <h3>🛠️ Controle Planilha</h3>
+            <div style="display:flex; align-items:center; gap:8px;">
+                <button id="update-btn" onclick="refreshSheet()" style="background:transparent; border:1px solid rgba(255,255,255,0.18); color:white; padding:6px 10px; border-radius:6px; cursor:pointer;">Atualizar</button>
+                <button id="test-btn" onclick="testScript()" style="background:transparent; border:1px solid rgba(255,255,255,0.12); color:white; padding:6px 10px; border-radius:6px; cursor:pointer;">Testar Conexão</button>
+                <button onclick="location.reload()" style="background:none; border:none; color:white; cursor:pointer;">Sair</button>
+            </div>
         </header>
 
         <div class="container">
@@ -98,143 +79,150 @@
                 
                 <div>
                     <div class="card">
-                        <h3>➕ Adicionar Novo Item</h3>
+                        <h3>➕ Novo Item</h3>
                         <div class="form-group">
                             <label>Nome do Item</label>
-                            <input type="text" id="new-name" placeholder="Ex: Panela de Pressão">
+                            <input type="text" id="new-name" placeholder="Ex: Panela Wok">
                         </div>
                         <div class="form-group">
                             <label>Tipo</label>
                             <select id="new-type">
                                 <option value="presente">🎁 Presente</option>
-                                <option value="comida">🍩 Comida/Bebida</option>
+                                <option value="comida">🍩 Comida</option>
                             </select>
                         </div>
-                        <button class="btn btn-primary" onclick="addItem()">Adicionar Item</button>
+                        <button class="btn btn-primary" onclick="addItem()">Adicionar na Planilha</button>
                     </div>
-                    
+
                     <div class="card">
-                        <h3>📊 Resumo</h3>
-                        <p>Total de Itens: <strong id="total-count">0</strong></p>
-                        <p>Já doados: <strong id="doados-count" style="color: var(--blue)">0</strong></p>
-                        <p>Disponíveis: <strong id="livres-count" style="color: var(--green)">0</strong></p>
+                        <h3>📊 Status</h3>
+                        <p>Total: <strong id="stat-total">0</strong></p>
+                        <p>Doados: <strong id="stat-taken" style="color:var(--blue)">0</strong></p>
+                        <p>Livres: <strong id="stat-free" style="color:var(--green)">0</strong></p>
                     </div>
                 </div>
 
                 <div>
                     <div class="card">
-                        <h3>📋 Gerenciar Lista Completa</h3>
-                        <div id="loading">Carregando dados...</div>
+                        <h3>📋 Lista Completa</h3>
+                        <div id="loading">Carregando dados da planilha...</div>
                         <table id="items-table">
                             <thead>
                                 <tr>
                                     <th>Item</th>
-                                    <th>Tipo</th>
-                                    <th>Status / Doador</th>
-                                    <th>Ações</th>
+                                    <th>Doador</th>
+                                    <th style="text-align:right">Ações</th>
                                 </tr>
                             </thead>
-                            <tbody id="table-body">
-                                </tbody>
+                            <tbody id="table-body"></tbody>
                         </table>
                     </div>
                 </div>
+
             </div>
         </div>
     </div>
 
     <script>
-        // --- CONFIGURAÇÕES ---
-        const BIN_ID = "691fb9f643b1c97be9ba9680"; 
-        const API_KEY = "$2a$10$ZiCe/tRQhbdU4CHOEfyH8O1z6mE6zeCFjFSZB4W2RYHDTIYx4eP/C";
-        
-        // ⚠️ SENHA DO ADMIN (Defina aqui)
-        const SENHA_CORRETA = "admin123"; 
-        // ---------------------
+        // --- SEU NOVO SCRIPT GOOGLE ---
+        const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbw-mGLV66ZBe4pRtIm6W8OHKJlkOCnEeT6ln_B7bh_S79xSFefNgiv2k0g14flwpDH5/exec";
+        const SENHA_ADMIN = "camila321"; // Senha de acesso
+        // -------------------------------
 
         let allData = [];
 
-        // --- SISTEMA DE LOGIN ---
         function login() {
-            const pass = document.getElementById('admin-pass').value;
-            if (pass === SENHA_CORRETA) {
+            if (document.getElementById('admin-pass').value === SENHA_ADMIN) {
                 document.getElementById('login-screen').style.display = 'none';
                 document.getElementById('admin-panel').style.display = 'block';
-                fetchData(); // Carrega os dados ao logar
+                fetchData();
             } else {
-                document.getElementById('login-msg').innerText = "Senha incorreta!";
+                alert("Senha errada!");
             }
         }
 
-        function logout() {
-            location.reload();
-        }
-
-        // --- FETCH DADOS ---
         async function fetchData() {
             try {
-                const response = await fetch(`https://api.jsonbin.io/v3/b/${BIN_ID}/latest`, {
-                    headers: { 'X-Master-Key': API_KEY }
-                });
-                const json = await response.json();
-                allData = json.record;
+                const response = await fetch(SCRIPT_URL);
+                const data = await response.json();
+                allData = data;
                 renderTable();
                 updateStats();
                 document.getElementById('loading').style.display = 'none';
             } catch (error) {
-                alert("Erro ao carregar dados. Verifique o console.");
-                console.error(error);
+                console.error('Erro em fetchData:', error);
+                // Mensagem mais detalhada para o usuário
+                let msg = 'Erro ao ler planilha. Verifique se o link está correto e se o Apps Script está implantado como Web App (acesso: qualquer pessoa).';
+                msg += '\n\nPossíveis causas:\n- URL inválida\n- App Script não implantado como "Anyone, even anonymous" ou similar\n- Problemas de CORS bloqueando a requisição (veja o console do navegador)\n- Resposta do servidor não é JSON válido\n\nAbra o console do navegador (F12) para mais detalhes.';
+                alert(msg);
             }
         }
 
-        // --- SALVAR DADOS NO SERVIDOR ---
-        async function saveData(newData, successMsg) {
+        async function sendAction(payload) {
+            document.body.style.cursor = 'wait';
             try {
-                // Efeito visual de carregamento (Opcional, mas bom ter)
-                document.body.style.cursor = 'wait';
-                
-                const response = await fetch(`https://api.jsonbin.io/v3/b/${BIN_ID}`, {
-                    method: 'PUT',
-                    headers: { 'Content-Type': 'application/json', 'X-Master-Key': API_KEY },
-                    body: JSON.stringify(newData)
+                await fetch(SCRIPT_URL, {
+                    method: 'POST',
+                    mode: 'no-cors',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
                 });
 
-                if (!response.ok) throw new Error("Erro ao salvar");
-                
-                allData = newData; // Atualiza local
-                renderTable();
-                updateStats();
-                alert(successMsg || "Atualizado com sucesso!");
-                
+                setTimeout(() => {
+                    fetchData();
+                    alert("Ação enviada com sucesso!");
+                    document.body.style.cursor = 'default';
+                }, 1500);
+
             } catch (error) {
-                alert("Erro ao salvar alterações.");
-            } finally {
+                alert("Erro ao enviar comando.");
                 document.body.style.cursor = 'default';
             }
         }
 
-        // --- RENDERIZAR TABELA ---
+        // --- AÇÕES ---
+        function addItem() {
+            const nome = document.getElementById('new-name').value;
+            const tipo = document.getElementById('new-type').value;
+            if(!nome) return alert("Digite o nome!");
+            sendAction({ action: 'admin_add', nome: nome, tipo: tipo });
+            document.getElementById('new-name').value = '';
+        }
+
+        function resetItem(id) {
+            if(confirm("Tem certeza? Isso vai apagar o nome do doador.")) {
+                sendAction({ action: 'admin_reset', id: id });
+            }
+        }
+
+        function deleteItem(id) {
+            if(confirm("Isso vai EXCLUIR a linha da planilha para sempre. Confirma?")) {
+                sendAction({ action: 'admin_delete', id: id });
+            }
+        }
+
+        // --- RENDERIZAÇÃO ---
         function renderTable() {
             const tbody = document.getElementById('table-body');
             tbody.innerHTML = '';
+            allData.sort((a, b) => (a.doador !== "") ? -1 : 1);
 
-            // Ordenar: Doados primeiro para fácil visualização
-            const sortedData = [...allData].sort((a, b) => (a.doador !== "") ? -1 : 1);
-
-            sortedData.forEach(item => {
+            allData.forEach(item => {
                 const tr = document.createElement('tr');
-                const isTaken = item.doador !== "";
+                const isTaken = item.doador && item.doador !== "";
 
                 tr.innerHTML = `
-                    <td><strong>${item.nome}</strong></td>
-                    <td>${item.tipo === 'presente' ? '🎁' : '🍩'}</td>
                     <td>
-                        ${isTaken 
-                            ? `<span class="status-doado">${item.doador}</span>` 
-                            : `<span class="status-livre">Livre</span>`
-                        }
+                        <strong>${item.nome}</strong><br>
+                        <small style="color:#888">${item.tipo === 'presente' ? '🎁 Presente' : '🍩 Comida'}</small>
                     </td>
                     <td>
+                        ${isTaken 
+                            ? `<span class="tag tag-ocupado">${item.doador}</span>` 
+                            : `<span class="tag tag-livre">Livre</span>`
+                        }
+                    </td>
+                    <td style="text-align:right">
                         ${isTaken 
                             ? `<button class="btn btn-warning" onclick="resetItem(${item.id})">Liberar</button>` 
                             : ''
@@ -247,59 +235,62 @@
         }
 
         function updateStats() {
-            document.getElementById('total-count').innerText = allData.length;
-            document.getElementById('doados-count').innerText = allData.filter(i => i.doador !== "").length;
-            document.getElementById('livres-count').innerText = allData.filter(i => i.doador === "").length;
+            document.getElementById('stat-total').innerText = allData.length;
+            document.getElementById('stat-taken').innerText = allData.filter(i => i.doador !== "").length;
+            document.getElementById('stat-free').innerText = allData.filter(i => i.doador === "").length;
         }
 
-        // --- AÇÕES ---
-
-        // 1. ADICIONAR ITEM
-        function addItem() {
-            const name = document.getElementById('new-name').value.trim();
-            const type = document.getElementById('new-type').value;
-
-            if (!name) return alert("Digite o nome do item!");
-
-            // Gera um ID novo (Maior ID atual + 1)
-            const maxId = allData.reduce((max, item) => item.id > max ? item.id : max, 0);
-            
-            const newItem = {
-                id: maxId + 1,
-                nome: name,
-                tipo: type,
-                doador: ""
-            };
-
-            const newData = [...allData, newItem];
-            saveData(newData, "Item adicionado!");
-            document.getElementById('new-name').value = ''; // Limpa input
-        }
-
-        // 2. EXCLUIR ITEM
-        function deleteItem(id) {
-            if(!confirm("Tem certeza que deseja excluir este item da lista?")) return;
-
-            const newData = allData.filter(item => item.id !== id);
-            saveData(newData, "Item excluído!");
-        }
-
-        // 3. RESETAR (LIBERAR) ITEM
-        function resetItem(id) {
-            if(!confirm("Isso vai apagar o nome do doador e deixar o item disponível novamente. Confirma?")) return;
-
-            const newData = allData.map(item => {
-                if (item.id === id) return { ...item, doador: "" };
-                return item;
-            });
-            saveData(newData, "Item liberado!");
-        }
-
-        // Permitir login com Enter
-        document.getElementById('admin-pass').addEventListener('keypress', function (e) {
-            if (e.key === 'Enter') login();
+        document.getElementById('admin-pass').addEventListener('keypress', (e) => {
+            if(e.key === 'Enter') login();
         });
 
-    </script>
+        // Função chamada pelo botão 'Atualizar' no header
+        window.refreshSheet = async function() {
+            const btn = document.getElementById('update-btn');
+            if (!btn) return fetchData();
+            try {
+                btn.disabled = true;
+                const original = btn.innerText;
+                btn.innerText = 'Atualizando...';
+                await fetchData();
+            } catch (err) {
+                console.error(err);
+                alert('Erro ao atualizar. Veja o console.');
+            } finally {
+                btn.disabled = false;
+                btn.innerText = 'Atualizar';
+            }
+        }
+
+        // Função para testar a conexão com o SCRIPT_URL e mostrar diagnóstico
+        window.testScript = async function() {
+            const url = SCRIPT_URL;
+            try {
+                // Abre a URL em nova aba para inspeção manual
+                window.open(url, '_blank');
+
+                // Tenta buscar (CORS pode bloquear, mas veremos o erro no console)
+                const response = await fetch(url, { method: 'GET', mode: 'cors' });
+                console.log('Resposta raw:', response);
+                const text = await response.text();
+                console.log('Corpo da resposta:', text);
+                if (response.ok) {
+                    try {
+                        const json = JSON.parse(text);
+                        console.log('JSON recebido:', json);
+                        alert('Conexão OK — resposta JSON recebida. Verifique o console para detalhes.');
+                    } catch (e) {
+                        alert('Conectou ao endpoint, mas a resposta não é JSON válido. Verifique o Apps Script. Veja console.');
+                    }
+                } else {
+                    alert('O endpoint respondeu com status: ' + response.status + '. Veja o console para o corpo da resposta.');
+                }
+            } catch (e) {
+                console.error('Erro ao testar SCRIPT_URL:', e);
+                alert('Falha ao conectar com o endpoint. Verifique no console (F12). Possíveis causas:\n- URL incorreta\n- App Script não implantado como Web App público\n- CORS bloqueando a requisição');
+            }
+        }
+
+</script>
 </body>
 </html>
